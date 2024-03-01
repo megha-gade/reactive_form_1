@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Form</title>
+
+</head>
+<body>
+
+    <form class="classForBorderAccordingToTheStatus"
+     [formGroup]="reactiveForm"
+     (ngSubmit)="OnSubmit()"
+
+      [ngClass]="formStatus">
+
+<div>
+
+<div formGroupName="personalDetails">
+
+  <label for="name">Name:</label>
+  <input type="text" id="name" formControlName="firstname">
+<small *ngIf="reactiveForm.get('personalDetails.firstname').errors?.['required']">Please Enter Your Name</small>
+<small *ngIf="reactiveForm.get('personalDetails.firstname').errors?.['noSpaceAllowed']">Space is not Allowed</small>
+
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" formControlName="email">
+<span style="color: red;"
+ *ngIf="!reactiveForm.get('personalDetails.email').valid && reactiveForm.touched">
+Please Enter Valid Email</span>
+
+<small *ngIf="reactiveForm.get('personalDetails.email').errors?.['noSpaceAllowed']">Space is not Allowed</small>
+
+  <label for="dob">DOB:</label>
+  <input type="date" id="dob" name="dob" formControlName="dob">
+
+</div>
+<button (click)="setDefaultValues()">set Default Values</button>
+
+
+<div>Gender</div>
+
+
+<span for="">Male</span>
+<input
+class="label"
+ type="radio"
+  id="male"
+formControlName="gender"
+    value="Male">
+
+
+
+
+    <span for="">Female</span>
+    <input
+    class="label"
+     type="radio"
+      id="female"
+    formControlName="gender"
+        value="Female">
+
+
+
+        <span for="">Other</span>
+        <input
+        class="label"
+         type="radio"
+          id="other"
+        formControlName="gender"
+            value="other">
+
+
+
+
+
+
+
+        <label for="course">Select Course:</label>
+        <select formControlName="course" id="course">
+            <option value="javascript">JavaScript</option>
+            <option value="java">Java</option>
+            <option value="angular">Angular</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea id="message" formControlName="message" rows="4"></textarea>
+<br>
+
+
+<br>
+
+
+
+
+
+<!-- div for formArrayGroping -->
+<div formArrayName="skills">
+<ng-container *ngFor="let skill of reactiveForm.get('skills')['controls'];index as i">
+<input type="text" placeholder="Enter your Skills" formControlName="{{i}}">
+</ng-container>
+
+<span style="color: red;"
+*ngIf="
+  (!reactiveForm.get('skills').dirty && reactiveForm.get('skills').touched)">Please Add Skills</span><br>
+<button (click)="addSkillsInput()">+ Add Skills</button>
+
+</div>
+<br><br>
+
+        <button type="submit">Submit</button>
+</div>
+</form>
+
+
+<div>User Entered Details
+<br>
+<h5><b>User Name : </b>{{reactiveForm.value.personalDetails.firstname}}</h5>
+<h5><b>User Email : </b>{{reactiveForm.value.personalDetails.email}}</h5>
+<h5><b>User DOB : </b>{{reactiveForm.value.personalDetails.dob}}</h5>
+<h5><b>User Gender : </b>{{reactiveForm.value.gender}}</h5>
+
+<h5><b>User course : </b>{{reactiveForm.value.course}}</h5>
+
+<h5 *ngIf="reactiveForm.value.skills == null;  elsePartOfSkills">
+  <b>User skills : </b>any
+</h5>
+
+<ng-container #elsePartOfSkills><b>User Skills  : </b>{{ reactiveForm.value.skills }}</ng-container>
+
+
+
+
+
+<p *ngIf="OnSubmitform">Thanks Dear {{reactiveForm.value.personalDetails.firstname}} for submitting this form ...!</p>
+
+</div>
+
+
+
+</body>
+</html>
